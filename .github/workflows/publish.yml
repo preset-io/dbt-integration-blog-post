@@ -36,10 +36,20 @@ jobs:
         cd preset-cli
         pip install .
         cd ..
-        
+
+    - name: 'Install dbt'
+      run: |
+        pip install dbt-core dbt-bigquery
+
     - name: 'Checkout'
       uses: actions/checkout@v3
 
+    - name: 'Compile manifest'
+      run: |
+        cd jaffle_shop
+        dbt compile
+        cd ..
+        
     - name: 'Authenticate using service account'
       run: 'echo "$KEYFILE" > ./dbt-service-account.json'
       env:
