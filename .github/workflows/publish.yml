@@ -3,11 +3,10 @@ name: 'Publish resources to Preset workspace'
 env:
   WORKSPACE: https://49437123.us1a.app.preset.io/
 
-  DBT_PROFILES_DIR: ./
+  DBT_PROFILES_DIR: ../
   DBT_GOOGLE_PROJECT_DEV: ${{ secrets.DBT_GOOGLE_PROJECT_DEV }}
   DBT_GOOGLE_BIGQUERY_DATASET_DEV: ${{ secrets.DBT_GOOGLE_BIGQUERY_DATASET_DEV }}
   # The DBT_GOOGLE_BIGQUERY_KEYFILE_DEV secret will be written to a json file below
-  DBT_GOOGLE_BIGQUERY_KEYFILE_DEV: ./dbt-service-account.json
 
 on:
   push:
@@ -44,22 +43,26 @@ jobs:
     - name: 'Checkout'
       uses: actions/checkout@v3
 
-    - name: 'Compile manifest'
-      run: |
-        cd jaffle_shop
-        dbt compile
-        cd ..
-        
     - name: 'Authenticate using service account'
       run: 'echo "$KEYFILE" > ./dbt-service-account.json'
       env:
         KEYFILE: ${{secrets.DBT_GOOGLE_BIGQUERY_KEYFILE_DEV}}
 
+    - name: 'Compile manifest'
+      env:
+        DBT_GOOGLE_BIGQUERY_KEYFILE_DEV: ../dbt-service-account.json
+      run: |
+        cd jaffle_shop
+        dbt compile
+        cd ..
+        
     - name: 'Publish resources'
       env:
         PRESET_API_TOKEN: ${{ secrets.PRESET_API_TOKEN }}
         PRESET_API_SECRET: ${{ secrets.PRESET_API_SECRET }}
+        DBT_GOOGLE_BIGQUERY_KEYFILE_DEV: ./dbt-service-account.json
       run: |
         preset-cli --workspaces=${WORKSPACE} superset sync dbt \
-          ./dbt-integration-blog-post/jaffle_shop/target/manifest.json \
+          ./jaffle_shop/target/manifest.json \
+          --profiles=profiles.yml \
           --project=jaffle_shop --target=dev --import-db
