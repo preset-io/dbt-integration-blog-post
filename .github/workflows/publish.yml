@@ -51,5 +51,5 @@ jobs:
         PRESET_API_SECRET: ${{ secrets.PRESET_API_SECRET }}
       run: |
         preset-cli --workspaces=${WORKSPACE} superset sync dbt \
-          ./jaffle_shop/target/manifest.json --project=jaffle_shop \
-          --target=dev --import-db
+          ./dbt-integration-blog-post/jaffle_shop/target/manifest.json \
+          --project=jaffle_shop --target=dev --import-db
