@@ -3,8 +3,8 @@ name: 'Publish resources to Preset workspace'
 env:
   WORKSPACE: https://49437123.us1a.app.preset.io/
 
-  DBT_PROFILES_DIR: ~/work/dbt-integration-blog-post/dbt-integration-blog-post
-  DBT_GOOGLE_BIGQUERY_KEYFILE_DEV: ~/dbt-service-account.json
+  DBT_PROFILES_DIR: /home/runner/work/dbt-integration-blog-post/dbt-integration-blog-post
+  DBT_GOOGLE_BIGQUERY_KEYFILE_DEV: /home/runner/dbt-service-account.json
   DBT_GOOGLE_PROJECT_DEV: ${{ secrets.DBT_GOOGLE_PROJECT_DEV }}
   DBT_GOOGLE_BIGQUERY_DATASET_DEV: ${{ secrets.DBT_GOOGLE_BIGQUERY_DATASET_DEV }}
 
@@ -44,7 +44,7 @@ jobs:
       uses: actions/checkout@v3
 
     - name: 'Authenticate using service account'
-      run: 'echo "$KEYFILE" > ~/dbt-service-account.json'
+      run: 'echo "$KEYFILE" > /home/runner/dbt-service-account.json'
       env:
         KEYFILE: ${{ secrets.DBT_GOOGLE_BIGQUERY_KEYFILE_DEV }}
 
