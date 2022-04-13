@@ -1,5 +1,12 @@
 version: 2
 
+sources:
+  - name: jaffle_shop
+    database: dbt-tutorial
+    tables:
+      - name: customers
+      - name: orders
+
 models:
   - name: customers
     description: One record per customer
@@ -33,3 +40,11 @@ models:
         tests:
           - accepted_values:
               values: ['placed', 'shipped', 'completed', 'return_pending', 'returned']
+
+metrics:
+  - name: total_orders
+    label: ''
+    model: ref('customers')
+    description: ''
+    type: sum
+    sql: number_of_orders
