@@ -3,7 +3,7 @@ name: 'Publish resources to Preset workspace'
 env:
   WORKSPACE: https://49437123.us1a.app.preset.io/
 
-  DBT_PROFILES_DIR: ../
+  DBT_PROFILES_DIR: $HOME/
   DBT_GOOGLE_PROJECT_DEV: ${{ secrets.DBT_GOOGLE_PROJECT_DEV }}
   DBT_GOOGLE_BIGQUERY_DATASET_DEV: ${{ secrets.DBT_GOOGLE_BIGQUERY_DATASET_DEV }}
   # The DBT_GOOGLE_BIGQUERY_KEYFILE_DEV secret will be written to a json file below
